@@ -1,28 +1,32 @@
-import { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Job from "./Job";
+import { useDispatch, useSelector } from "react-redux";
+import queryReducer from "../redux/reducers/queryReducer";
+import jobsReducers from "../redux/reducers/jobsReducer";
 
 const MainSearch = () => {
-  const [query, setQuery] = useState("");
-  const [jobs, setJobs] = useState([]);
+  const dispatch = useDispatch();
+  const query = useSelector(state => state.queryReducer.content)
+  const jobs = useSelector(state => state.jobsReducers.content)
 
   const navigate = useNavigate();
 
   const baseEndpoint = "https://strive-benchmark.herokuapp.com/api/jobs?search=";
 
   const handleChange = e => {
-    setQuery(e.target.value);
+    dispatch(queryReducer(e))
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
 
+    // dispatch(setMyFetch())
     try {
       const response = await fetch(baseEndpoint + query + "&limit=20");
       if (response.ok) {
         const { data } = await response.json();
-        setJobs(data);
+        dispatch(jobsReducers(data))
       } else {
         alert("Error fetching results");
       }

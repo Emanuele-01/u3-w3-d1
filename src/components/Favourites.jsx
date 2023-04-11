@@ -2,6 +2,8 @@ import { Container, Row, Col, ListGroup, Button } from "react-bootstrap";
 import { Trash } from "react-bootstrap-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { REMOVE_FROM_FAVOURITE } from "../redux/action";
+import favoriteRemoveReducer from "../redux/reducers/favoriteRemoveReducer";
 
 const Favourites = () => {
   const favourites = useSelector(state => state.favourite.list);
@@ -27,10 +29,7 @@ const Favourites = () => {
                     color="red"
                     className="me-2"
                     onClick={() =>
-                      dispatch({
-                        type: "REMOVE_FROM_FAVOURITE",
-                        payload: fav
-                      })
+                      dispatch(favoriteRemoveReducer(fav))
                     }
                   />
                   <Link to={"/" + fav}>{fav}</Link>
