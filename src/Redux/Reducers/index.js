@@ -1,35 +1,30 @@
-
-const initalState = {
-        query : {
-            content : ''
-        },
-        jobs : {
-        content : []
-        }
-};
-
-// eslint-disable-next-line no-unused-vars
-const functionStorage = (state = initalState, action) => {
-switch(action.type){
-    case 'SET_QUERY' : 
-    return {
-        ...state, 
-        query : {
-            ...state.query,
-
-            content : action.payload
-        }
-    }
-    case 'SET_JOBS' : 
-    return{
-        ...state,
-        jobs : { ...state.jobs,
-
-            content : action.payload}
-    }
-    default : 
-    return state
+const initialState = {
+  favourite: {
+    list: [],
+  },
 }
-};
 
-export default functionStorage;
+const mainReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'ADD_TO_FAVOURITE':
+      return {
+        ...state,
+        favourite: {
+          ...state.favourite,
+          list: [...state.favourite.list, action.payload],
+        },
+      }
+    case 'REMOVE_FROM_FAVOURITE':
+      return {
+        ...state,
+        favourite: {
+          ...state.favourite,
+          list: state.favourite.list.filter((fav) => fav !== action.payload),
+        },
+      }
+    default:
+      return state
+  }
+}
+
+export default mainReducer
